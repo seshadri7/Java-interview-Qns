@@ -1,6 +1,6 @@
 package programs;
 
-public class Duplicatevalues {
+public class GetTheDuplicatevalues {
 
 	public static void main(String[] args) {
 		
