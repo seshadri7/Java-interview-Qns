@@ -49,7 +49,7 @@ public static void main(String[] args) {
 		Session session=Session.getInstance(properties, new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {				
-				return new PasswordAuthentication("v.seshadri9@gmail.com", "dmlplbotlchtnkfk");
+				return new PasswordAuthentication("v.seshadri9@gmail.com", "emailpassword");
 			}
 			
 			
@@ -153,7 +153,7 @@ public static void main(String[] args) {
 		Session session=Session.getInstance(properties, new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {				
-				return new PasswordAuthentication("v.seshadri9@gmail.com", "dmlplbotlchtnkfk");
+				return new PasswordAuthentication("v.seshadri9@gmail.com", "emailpassword");
 			}
 			
 			
