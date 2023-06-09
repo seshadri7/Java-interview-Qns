@@ -1,0 +1,58 @@
+Sub FindDuplicateParas()
+ Application.ScreenUpdating = False
+ Dim i As Long, RngSrc As Range, RngFnd As Range
+ Const Clr As Long = wdBrightGreen
+ Dim eTime As Single
+ eTime = Timer
+ Options.DefaultHighlightColorIndex = Clr
+ With ActiveDocument
+   With .Range.Find
+     .ClearFormatting
+     .Replacement.ClearFormatting
+     .Forward = True
+     .Format = False
+     .MatchCase = False
+     .MatchWholeWord = False
+     .MatchWildcards = False
+     .MatchSoundsLike = False
+     .MatchAllWordForms = False
+     .Execute
+   End With
+   For i = 1 To .Paragraphs.Count
+     If i Mod 100 = 0 Then DoEvents
+     On Error Resume Next
+     Set RngSrc = .Paragraphs(i).Range
+     If RngSrc.HighlightColorIndex <> Clr Then
+       Set RngFnd = .Range(.Paragraphs(i).Range.End, .Range.End)
+       If Len(RngSrc.Text) < 256 Then
+         With RngFnd.Find
+           .Text = RngSrc.Text
+           .Replacement.Text = "^&"
+           .Replacement.Highlight = True
+           .Wrap = wdFindStop
+           .Execute Replace:=wdReplaceAll
+         End With
+       Else
+         With RngFnd
+           With .Find
+             .Text = Left(RngSrc.Text, 255)
+             .Wrap = wdFindStop
+             .Execute
+           End With
+           Do While .Find.Found
+             If RngSrc.Text = .Duplicate.Text Then
+               RngSrc.HighlightColorIndex = Clr
+               .Duplicate.HighlightColorIndex = Clr
+             End If
+             .Collapse wdCollapseEnd
+             .Find.Execute
+           Loop
+         End With
+       End If
+     End If
+   Next
+ End With
+ ' Report time taken. Elapsed time calculation allows for execution to extend past midnight.
+ MsgBox "Finished. Elapsed time: " & (Timer - eTime + 86400) Mod 86400 & " seconds."
+ Application.ScreenUpdating = True
+ End Sub
